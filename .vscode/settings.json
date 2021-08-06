@@ -1,0 +1,15 @@
+{
+  // solargraph
+  "solargraph.commandPath": "/Users/toki/.rbenv/versions/2.6.3/bin/solargraph",
+  "ruby.intellisense": "rubyLocate",
+  "ruby.useLanguageServer": true,
+  "solargraph.definitions": true,
+  "solargraph.diagnostics": true,
+  "solargraph.autoformat": true,
+  "solargraph.formatting": true,
+  "solargraph.logLevel": "info",
+
+  // prettier
+  "editor.formatOnSave": true,
+  "editor.formatOnType": true,
+}
