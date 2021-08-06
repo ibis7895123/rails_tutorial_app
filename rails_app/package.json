@@ -1,9 +1,5 @@
 {
   "name": "rails_app",
   "private": true,
-  "dependencies": {},
-  "devDependencies": {
-    "@prettier/plugin-ruby": "^1.6.1",
-    "prettier": "^2.3.2"
-  }
+  "dependencies": {}
 }
