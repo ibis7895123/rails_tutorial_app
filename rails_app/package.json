@@ -2,7 +2,7 @@
   "name": "rails_app",
   "private": true,
   "scripts": {
-    "start": "node server.js"
+    "start": ""
   },
   "dependencies": {}
 }
