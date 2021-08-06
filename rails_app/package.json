@@ -1,8 +1,5 @@
 {
   "name": "rails_app",
   "private": true,
-  "scripts": {
-    "start": ""
-  },
   "dependencies": {}
 }
