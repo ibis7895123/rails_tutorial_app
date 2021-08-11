@@ -6,7 +6,7 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
 
     # post前後で「User.count」の値が変化していないことをチェック
     assert_no_difference 'User.count' do
-      post users_path,
+      post signup_path,
            params: {
              user: {
                name: '',
@@ -19,5 +19,6 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
     assert_template 'users/new'
     assert_select 'div#error_explanation'
     assert_select 'div.field_with_errors'
+    assert_select 'form[action="/signup"]'
   end
 end
