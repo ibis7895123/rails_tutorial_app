@@ -5,5 +5,24 @@ class UsersController < ApplicationController
     # debugger
   end
 
-  def new; end
+  def new
+    @user = User.new
+  end
+
+  def create
+    @user = User.new(user_params)
+
+    # 保存に失敗した
+    render 'new' unless @user.save
+
+    # 保存に成功
+  end
+
+  def user_params
+    params
+      .require(:user)
+      .permit(:name, :email, :password, :password_confirmation)
+  end
+
+  private :user_params
 end
