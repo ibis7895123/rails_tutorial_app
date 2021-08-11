@@ -12,10 +12,12 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
 
-    # 保存に失敗した
-    render 'new' unless @user.save
-
-    # 保存に成功
+    # 保存が成功したかどうかで遷移先を分岐
+    if @user.save
+      redirect_to user_url(@user)
+    else
+      render 'new'
+    end
   end
 
   def user_params
