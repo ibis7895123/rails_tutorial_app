@@ -11,7 +11,12 @@ class SessionsController < ApplicationController
     if !user || !user.authenticate(password)
       flash.now[:danger] = 'Invalid email/password combination.'
       render 'new'
+      return
     end
+
+    # ログイン
+    log_in user
+    redirect_to user_path(user)
   end
 
   def destroy; end
