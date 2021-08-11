@@ -14,6 +14,7 @@ class UsersController < ApplicationController
 
     # 保存が成功したかどうかで遷移先を分岐
     if @user.save
+      flash[:success] = 'Welcome to the Sample App!'
       redirect_to user_url(@user)
     else
       render 'new'
