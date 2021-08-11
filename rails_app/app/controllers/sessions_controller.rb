@@ -9,7 +9,7 @@ class SessionsController < ApplicationController
 
     # ユーザーが見つからなかった or パスワードが間違ってたらエラーを返す
     if !user || !user.authenticate(password)
-      flash[:danger] = 'Invalid email/password combination.'
+      flash.now[:danger] = 'Invalid email/password combination.'
       render 'new'
     end
   end
