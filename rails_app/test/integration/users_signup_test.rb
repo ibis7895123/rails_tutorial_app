@@ -40,5 +40,8 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
     follow_redirect! # リダイレクト
     assert_template 'users/show'
     assert_not flash[:success].empty?
+
+    # セッションにユーザーIDがある
+    assert is_logged_in_session?
   end
 end

@@ -14,7 +14,12 @@ class UsersController < ApplicationController
 
     # 保存が成功したかどうかで遷移先を分岐
     if @user.save
+      # 自動でログインしておく
+      log_in @user
+
       flash[:success] = 'Welcome to the Sample App!'
+
+      # ユーザー詳細へリダイレクト
       redirect_to user_url(@user)
     else
       render 'new'
