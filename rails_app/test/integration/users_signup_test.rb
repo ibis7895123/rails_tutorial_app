@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class UsersSignupTest < ActionDispatch::IntegrationTest
-  test 'invalid signup information' do
+  test '異常系_アカウント登録_バリデーションエラー' do
     get signup_path
 
     # post前後で「User.count」の値が変化していないことをチェック
@@ -22,7 +22,7 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
     assert_select 'form[action="/signup"]'
   end
 
-  test 'valid signup information' do
+  test '正常系_アカウント登録' do
     get signup_path
 
     # ユーザー作成したあとにUser.countが1増えているか
