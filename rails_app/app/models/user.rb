@@ -18,4 +18,17 @@ class User < ApplicationRecord
             }
   has_secure_password
   validates :password, presence: true, length: { minimum: 6 }
+
+  # 渡された文字列のハッシュ値を返す
+  def self.digest(string)
+    # 暗号化コスト設定
+    cost =
+      if ActiveModel::SecurePassword.min_cost
+        BCrypt::Engine::MIN_COST
+      else
+        BCrypt::Engine.cost
+      end
+
+    return BCrypt::Password.create(string, cost: cost)
+  end
 end

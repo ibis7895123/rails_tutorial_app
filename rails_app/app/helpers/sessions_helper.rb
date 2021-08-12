@@ -7,10 +7,7 @@ module SessionsHelper
   # ログインしているユーザーを返す
   def current_user
     # 未ログインならnilを返す
-    if !session[:user_id]
-      puts 'not found user id.'
-      return nil
-    end
+    return nil if !session[:user_id]
 
     # idからユーザーを取得して返す
     # 2回目以降はキャッシュを返す
