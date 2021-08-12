@@ -18,4 +18,9 @@ module SessionsHelper
 
     return @current_user = User.find_by(id: session[:user_id])
   end
+
+  # ログイン済ならtrue
+  def logged_in?
+    return !current_user.nil?
+  end
 end
