@@ -17,8 +17,9 @@ class SessionsController < ApplicationController
     # ログイン
     log_in user
 
-    # ログイン情報を記憶する
-    remember user
+    # remeber meにチェックを入れていればログイントークンを記憶する
+    # チェックなしならログイントークンを削除
+    params[:session][:remember_me] == '1' ? remember(user) : forget(user)
 
     redirect_to user_path(user)
   end

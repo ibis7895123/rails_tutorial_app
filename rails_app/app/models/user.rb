@@ -36,7 +36,7 @@ class User < ApplicationRecord
     return BCrypt::Password.new(@remember_digest).is_password?(remember_token)
   end
 
-  # ユーザーのログイン情報を破棄する
+  # DBに保存していたユーザーのログイントークンを破棄する
   def forget(user)
     user.update_attribute(:remember_digest, nil)
   end
