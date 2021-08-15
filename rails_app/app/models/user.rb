@@ -33,6 +33,11 @@ class User < ApplicationRecord
     return BCrypt::Password.new(@remember_digest).is_password?(remember_token)
   end
 
+  # ユーザーのログイン情報を破棄する
+  def forget(user)
+    user.update_attribute(:remember_digest, nil)
+  end
+
   # 渡された文字列のハッシュ値を返す
   def self.digest(string)
     # 暗号化コスト設定

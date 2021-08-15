@@ -26,8 +26,11 @@ module SessionsHelper
       user = User.find_by(id: user_id)
 
       # remember_tokenが正しくない場合nilを返す
-      return nil if !user && !user.authenticated?(cookies[:remember_token])
+      if !user || !user.authenticated?(cookies[:remember_token])
+        return @current_user = nil
+      end
 
+      # ログイン(セッション情報を更新)
       log_in user
       return @current_user = user
     end
@@ -38,8 +41,21 @@ module SessionsHelper
     return !current_user.nil?
   end
 
+  def forget(user)
+    user.forget(current_user)
+    cookies.delete(:user_id)
+    cookies.delete(:remember_token)
+  end
+
+  #  現在のユーザーをログアウトする
   def log_out
+    # cookieを削除
+    forget(current_user)
+
+    # セッションを削除
     session.delete(:user_id)
+
+    # ユーザー変数を初期化
     @current_user = nil
   end
 end
