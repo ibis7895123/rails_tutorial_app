@@ -86,6 +86,10 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
     assert_redirected_to root_path
     follow_redirect!
 
+    # 複数ウィンドウでログアウトクリックしたときにエラーにならないか
+    delete logout_path
+    follow_redirect!
+
     # ログインリンクがある
     assert_select 'a[href=?]', login_path
 
