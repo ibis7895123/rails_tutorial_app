@@ -5,7 +5,7 @@ class User < ApplicationRecord
   attr_accessor :remember_token
 
   # モデル保存前にメールアドレスを小文字に変換する
-  before_save { email.downcase! }
+  before_save { self.email.downcase! }
   validates :name, presence: true, length: { maximum: 50 }
   validates :email,
             presence: true,
@@ -31,9 +31,11 @@ class User < ApplicationRecord
   # 渡されたトークンがダイジェストと一致したらtrueを返す
   def authenticated?(remember_token)
     # DBのログイントークン(remember_digest)が空のときはfalseを返す
-    return false if remember_digest.nil?
+    return false if self.remember_digest.nil?
 
-    return BCrypt::Password.new(@remember_digest).is_password?(remember_token)
+    return(
+      BCrypt::Password.new(self.remember_digest).is_password?(remember_token)
+    )
   end
 
   # DBに保存していたユーザーのログイントークンを破棄する
