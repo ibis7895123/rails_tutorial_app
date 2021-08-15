@@ -34,6 +34,9 @@ module SessionsHelper
       log_in user
       return @current_user = user
     end
+
+    # セッションにもcookieにも情報ない場合はnilを返す
+    return @current_user = nil
   end
 
   # ログイン済ならtrue
@@ -54,8 +57,5 @@ module SessionsHelper
 
     # セッションを削除
     session.delete(:user_id)
-
-    # ユーザー変数を初期化
-    @current_user = nil
   end
 end
