@@ -42,6 +42,6 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
     assert_not flash[:success].empty?
 
     # セッションにユーザーIDがある
-    assert is_logged_in_session?
+    assert is_logged_in_session_test?
   end
 end

@@ -88,4 +88,8 @@ class UserTest < ActiveSupport::TestCase
     @user.password = @user.password_confirmation = 'a' * 5
     assert_not @user.valid?
   end
+
+  test '異常系_remember_digestが空文字で認証状態を確認してもエラーにならない' do
+    assert_not @user.authenticated?('')
+  end
 end
