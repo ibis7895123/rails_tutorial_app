@@ -105,6 +105,9 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
 
     # cookieにremember_tokenが保存されている
     assert_not_empty cookies['remember_token']
+
+    # 保存されているremember_tokenがcontrollerのuserインスタンスと同じか
+    assert_equal cookies['remember_token'], assigns(:user).remember_token
   end
 
   test '正常系_ログイン_remember_me_不使用' do
