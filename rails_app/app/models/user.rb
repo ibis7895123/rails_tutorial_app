@@ -28,6 +28,11 @@ class User < ApplicationRecord
     update_attribute(:remember_digest, User.digest(@remember_token))
   end
 
+  # 渡されたトークンがダイジェストと一致したらtrueを返す
+  def authenticated?(remember_token)
+    return BCrypt::Password.new(@remember_digest).is_password?(remember_token)
+  end
+
   # 渡された文字列のハッシュ値を返す
   def self.digest(string)
     # 暗号化コスト設定

@@ -16,6 +16,10 @@ class SessionsController < ApplicationController
 
     # ログイン
     log_in user
+
+    # ログイン情報を記憶する
+    remember user
+
     redirect_to user_path(user)
   end
 
