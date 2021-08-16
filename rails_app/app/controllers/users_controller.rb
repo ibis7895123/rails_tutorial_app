@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
   # ページ表示前の処理
   before_action :logged_in_user, only: %i[edit update]
+  before_action :correct_user, only: %i[edit update]
 
   def show
     @user = User.find(params[:id])
@@ -63,6 +64,13 @@ class UsersController < ApplicationController
 
     flash[:danger] = 'Please log in.'
     redirect_to login_path
+  end
+
+  def correct_user
+    @user = User.find(params[:id])
+
+    # 自分以外のページを開こうとしていたらHOMEに戻す
+    redirect_to root_path unless current_user?(@user)
   end
 
   private :logged_in_user

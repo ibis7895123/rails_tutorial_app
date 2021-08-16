@@ -39,6 +39,11 @@ module SessionsHelper
     return @current_user = nil
   end
 
+  # 渡されたユーザーがログイン済ユーザーと同じならtrue
+  def current_user?(user)
+    return user == current_user
+  end
+
   # ログイン済ならtrue
   def logged_in?
     return !current_user.nil?
