@@ -9,6 +9,9 @@ class UsersEditTest < ActionDispatch::IntegrationTest
     name = 'Foo Bar'
     email = 'foo@bar.com'
 
+    # ログイン
+    log_in_as_test(@user)
+
     # 編集ページを開く
     get edit_user_path(@user)
     assert_template 'users/edit'
@@ -38,6 +41,9 @@ class UsersEditTest < ActionDispatch::IntegrationTest
   end
 
   test '異常系_バリデーションエラー' do
+    # ログイン
+    log_in_as_test(@user)
+
     # 編集ページを開く
     get edit_user_path(@user)
     assert_template 'users/edit'
@@ -53,5 +59,32 @@ class UsersEditTest < ActionDispatch::IntegrationTest
           }
     assert_template 'users/edit'
     assert_select 'div.alert', 'The form contains 4 errors.'
+  end
+
+  test '異常系_ログインせずに編集ページを開くとログインを促す' do
+    # 編集ページを開く
+    get edit_user_path(@user)
+
+    # フラッシュメッセージが入っている
+    assert_not flash.empty?
+
+    # ログインページにリダイレクト
+    assert_redirected_to login_path
+  end
+
+  test '異常系_ログインせずにユーザー情報更新するとログインを促す' do
+    patch user_path(@user),
+          params: {
+            user: {
+              name: @user.name,
+              email: @user.email
+            }
+          }
+
+    # フラッシュメッセージが入っている
+    assert_not flash.empty?
+
+    # ログインページにリダイレクト
+    assert_redirected_to login_path
   end
 end

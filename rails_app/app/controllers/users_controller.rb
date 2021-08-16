@@ -1,4 +1,7 @@
 class UsersController < ApplicationController
+  # ページ表示前の処理
+  before_action :logged_in_user, only: %i[edit update]
+
   def show
     @user = User.find(params[:id])
     # 以下を埋め込むとコンソールでその時点のデバッグができる
@@ -51,4 +54,16 @@ class UsersController < ApplicationController
   end
 
   private :user_params
+
+  # ログイン済ユーザーかチェック
+  # 未ログインならログインページへリダイレクト
+  def logged_in_user
+    # ログイン済なら何もしない
+    return if logged_in?
+
+    flash[:danger] = 'Please log in.'
+    redirect_to login_path
+  end
+
+  private :logged_in_user
 end
