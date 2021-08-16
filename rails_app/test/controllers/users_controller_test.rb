@@ -6,9 +6,9 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     @other_user = users(:archer)
   end
 
-  test 'should get new' do
-    get signup_path
-    assert_response :success
+  test '正常系_ログインしてない場合はユーザー一覧は見れない' do
+    get users_path
+    assert_redirected_to login_path
   end
 
   test '異常系_ログイン済のユーザーが自分以外の編集ページを見れない' do
