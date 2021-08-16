@@ -15,7 +15,7 @@ class SessionsHelperTest < ActionView::TestCase
     assert is_logged_in_session_test?
   end
 
-  test '異常系_rememberトークンが間違っている場合にユーザーがnilになる' do
+  test '正常系_rememberトークンが間違っている場合にユーザーがnilになる' do
     # DBのremember_digestを更新
     @user.update_attribute(:remember_digest, User.digest(User.new_token))
 
