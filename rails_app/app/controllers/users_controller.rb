@@ -53,6 +53,7 @@ class UsersController < ApplicationController
   end
 
   def user_params
+    # adminはパラメータに含めない(セキュリティ対策)
     params
       .require(:user)
       .permit(:name, :email, :password, :password_confirmation)

@@ -38,4 +38,18 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     # HOMEにリダイレクト
     assert_redirected_to root_path
   end
+
+  test '正常系_webページからのリクエストではadminフラグを変更できない' do
+    # ログイン
+    log_in_as_test(@other_user)
+
+    # 管理者でないことを確認
+    assert_not @other_user.admin?
+
+    # ユーザーのadmin情報を更新するリクエストを送る
+    patch user_path(@other_user), params: { user: { admin: true } }
+
+    # 管理者フラグが変わってないことを確認
+    assert_not @other_user.reload.admin?
+  end
 end
