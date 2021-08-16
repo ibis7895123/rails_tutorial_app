@@ -1,7 +1,8 @@
 class UsersController < ApplicationController
   # ページ表示前の処理
-  before_action :logged_in_user, only: %i[index edit update]
+  before_action :logged_in_user, only: %i[index edit update destroy]
   before_action :correct_user, only: %i[edit update]
+  before_action :admin_user, only: :destroy
 
   def index
     @users = User.paginate(page: params[:page])
@@ -52,6 +53,14 @@ class UsersController < ApplicationController
     render 'edit'
   end
 
+  def destroy
+    # DBから該当のユーザーを削除
+    User.find(params[:id]).destroy
+
+    flash[:success] = 'User deleted.'
+    redirect_to users_path
+  end
+
   def user_params
     # adminはパラメータに含めない(セキュリティ対策)
     params
@@ -74,6 +83,7 @@ class UsersController < ApplicationController
     redirect_to login_path
   end
 
+  # 開こうとしているページが自分のものどうかを確認
   def correct_user
     @user = User.find(params[:id])
 
@@ -82,4 +92,10 @@ class UsersController < ApplicationController
   end
 
   private :logged_in_user
+
+  # 管理者かどうか確認
+  def admin_user
+    # 管理者でなければHOMEに戻す
+    redirect_to root_path unless current_user.admin?
+  end
 end
