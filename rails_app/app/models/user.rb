@@ -19,7 +19,7 @@ class User < ApplicationRecord
               case_sensitive: false
             }
   has_secure_password
-  validates :password, presence: true, length: { minimum: 6 }
+  validates :password, presence: true, length: { minimum: 6 }, allow_nil: true
 
   def remember
     @remember_token = User.new_token

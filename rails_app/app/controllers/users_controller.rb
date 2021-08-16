@@ -20,7 +20,7 @@ class UsersController < ApplicationController
       flash[:success] = 'Welcome to the Sample App!'
 
       # ユーザー詳細へリダイレクト
-      redirect_to user_url(@user)
+      redirect_to user_path(@user)
     else
       render 'new'
     end
@@ -35,6 +35,8 @@ class UsersController < ApplicationController
 
     if @user.update_attributes(user_params)
       # 更新に成功
+      flash[:success] = 'Profile updated.'
+      redirect_to user_path(@user)
       return
     end
 
