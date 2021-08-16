@@ -63,4 +63,19 @@ module SessionsHelper
     # セッションを削除
     session.delete(:user_id)
   end
+
+  # 記憶したURL(ない場合はデフォルト)にリダイレクト
+  def redirect_back_or(default)
+    redirect_url = session[:forwarding_url] ? session[:forwarding_url] : default
+    redirect_to(redirect_url)
+
+    # 使ったURLは削除しておく
+    session.delete(:forwarding_url)
+  end
+
+  # アクセスしようとしたURLを覚えておく
+  def store_location
+    # 記憶するのはGETのみ
+    session[:forwarding_url] = request.original_url if request.get?
+  end
 end

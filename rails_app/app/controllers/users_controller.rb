@@ -62,6 +62,9 @@ class UsersController < ApplicationController
     # ログイン済なら何もしない
     return if logged_in?
 
+    # ログイン後のリダイレクト先を記憶しておく
+    store_location
+
     flash[:danger] = 'Please log in.'
     redirect_to login_path
   end

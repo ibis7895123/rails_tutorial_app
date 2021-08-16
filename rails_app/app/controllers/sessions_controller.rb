@@ -21,7 +21,8 @@ class SessionsController < ApplicationController
     # チェックなしならログイントークンを削除
     params[:session][:remember_me] == '1' ? remember(@user) : forget(@user)
 
-    redirect_to user_path(@user)
+    # ログイン前にいたページに戻す(デフォルトはユーザー詳細)
+    redirect_back_or user_path(@user)
   end
 
   def destroy
