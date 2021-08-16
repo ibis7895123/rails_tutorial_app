@@ -6,7 +6,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     @other_user = users(:archer)
   end
 
-  test '正常系_ログインしてない場合はユーザー一覧は見れない' do
+  test '異常系_ログインしてない場合はユーザー一覧は見れない' do
     get users_path
     assert_redirected_to login_path
   end
@@ -39,7 +39,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to root_path
   end
 
-  test '正常系_webページからのリクエストではadminフラグを変更できない' do
+  test '異常系_webページからのリクエストではadminフラグを変更できない' do
     # ログイン
     log_in_as_test(@other_user)
 
@@ -51,5 +51,28 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
     # 管理者フラグが変わってないことを確認
     assert_not @other_user.reload.admin?
+  end
+
+  test '異常系_ログインしてない場合はユーザーの削除できない' do
+    # 削除リクエストを送ってもユーザー数が変化しないこと
+    assert_no_difference 'User.count' do
+      delete user_path(@user)
+    end
+
+    # ログインページにリダイレクト
+    assert_redirected_to login_path
+  end
+
+  test '異常系_管理者でないユーザー(ログイン済)はユーザーの削除できない' do
+    # ログイン
+    log_in_as_test(@other_user)
+
+    # 削除リクエストを送ってもユーザー数が変化しないこと
+    assert_no_difference 'User.count' do
+      delete user_path(@user)
+    end
+
+    # HOMEにリダイレクト
+    assert_redirected_to root_path
   end
 end

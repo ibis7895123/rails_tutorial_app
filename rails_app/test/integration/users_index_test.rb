@@ -2,12 +2,13 @@ require 'test_helper'
 
 class UsersIndexTest < ActionDispatch::IntegrationTest
   def setup
-    @user = users(:michael)
+    @admin_user = users(:michael)
+    @non_admin_user = users(:archer)
   end
 
-  test 'ページネーション付きで一覧ページを取得' do
+  test '正常系_ページネーション付きで一覧ページを取得_管理者ユーザー' do
     # ログイン
-    log_in_as_test(@user)
+    log_in_as_test(@admin_user)
 
     # 一覧ページを開く(ページは1)
     get users_path
@@ -17,11 +18,32 @@ class UsersIndexTest < ActionDispatch::IntegrationTest
     # ページャーがある(上下)
     assert_select 'div.pagination', count: 2
 
-    # 表示されているユーザーのリンクが正しい
     User
       .paginate(page: 1)
       .each do |user|
+        # 表示されているユーザーのリンクが正しい
         assert_select 'a[href=?]', user_path(user), text: user.name
+
+        # 自分以外のユーザーには削除リンクが表示される
+        if user != @admin_user
+          assert_select 'a[href=?]', user_path(user), text: 'delete'
+        end
       end
+
+    # non_admin_userを削除したあと、ユーザー数が減っている
+    assert_difference 'User.count', -1 do
+      delete user_path(@non_admin_user)
+    end
+  end
+
+  test '正常系_ページネーション付きで一覧ページを取得_一般ユーザー' do
+    # ログイン
+    log_in_as_test(@non_admin_user)
+
+    # 一覧ページを開く
+    get users_path
+
+    # 削除リンクが表示されない
+    assert_select 'a', text: 'delete', count: 0
   end
 end
