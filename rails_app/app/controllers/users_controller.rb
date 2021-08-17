@@ -23,13 +23,11 @@ class UsersController < ApplicationController
 
     # 保存が成功したかどうかで遷移先を分岐
     if @user.save
-      # 自動でログインしておく
-      log_in @user
+      # アカウントの有効化メールを送信
+      UserMailer.account_activation(@user).deliver_now
 
-      flash[:success] = 'Welcome to the Sample App!'
-
-      # ユーザー詳細へリダイレクト
-      redirect_to user_path(@user)
+      flash[:info] = 'Please check your email to activate your account.'
+      redirect_to root_path
     else
       render 'new'
     end
