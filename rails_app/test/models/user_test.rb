@@ -90,6 +90,6 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test '正常系_remember_digestが空文字で認証状態を確認してもエラーにならない' do
-    assert_not @user.authenticated?('')
+    assert_not @user.authenticated?(:remember, '')
   end
 end

@@ -33,12 +33,16 @@ class User < ApplicationRecord
   end
 
   # 渡されたトークンがダイジェストと一致したらtrueを返す
-  def authenticated?(remember_token)
-    # DBのログイントークン(remember_digest)が空のときはfalseを返す
-    return false if self.remember_digest.nil?
+  def authenticated?(attribute, token)
+    # attributeに応じたダイジェストを取得
+    digest = self.send("#{attribute}_digest")
 
+    # ダイジェストが空のときはfalseを返す
+    return false if digest.nil?
+
+    # トークンとダイジェストを突き合わせて、同じならtrue
     return(
-      BCrypt::Password.new(self.remember_digest).is_password?(remember_token)
+      BCrypt::Password.new(digest).is_password?(token)
     )
   end
 

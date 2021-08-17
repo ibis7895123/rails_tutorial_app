@@ -26,7 +26,7 @@ module SessionsHelper
       user = User.find_by(id: user_id)
 
       # remember_tokenが正しくない場合nilを返す
-      if !user || !user.authenticated?(cookies[:remember_token])
+      if !user || !user.authenticated?(:remember, cookies[:remember_token])
         return @current_user = nil
       end
 
