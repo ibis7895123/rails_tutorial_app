@@ -2,10 +2,14 @@
 VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
 
 class User < ApplicationRecord
-  attr_accessor :remember_token
+  attr_accessor :remember_token, :activation_token
 
   # モデル保存前にメールアドレスを小文字に変換する
-  before_save { self.email.downcase! }
+  before_save :downcase_email
+
+  # モデル作成前に有効化トークンを作成
+  before_create :create_activation_digest
+
   validates :name, presence: true, length: { maximum: 50 }
   validates :email,
             presence: true,
@@ -18,8 +22,8 @@ class User < ApplicationRecord
             uniqueness: {
               case_sensitive: false
             }
-  has_secure_password
   validates :password, presence: true, length: { minimum: 6 }, allow_nil: true
+  has_secure_password
 
   def remember
     @remember_token = User.new_token
@@ -42,6 +46,19 @@ class User < ApplicationRecord
   def forget(user)
     user.update_attribute(:remember_digest, nil)
   end
+
+  # メールアドレスをすべて小文字にする
+  def downcase_email
+    self.email = email.downcase
+  end
+  private :downcase_email
+
+  # 有効化トークンとダイジェストを作成、代入する
+  def create_activation_digest
+    self.activation_token = User.new_token
+    self.activation_digest = User.digest(self.activation_token)
+  end
+  private :create_activation_digest
 
   # 渡された文字列のハッシュ値を返す
   def self.digest(string)
