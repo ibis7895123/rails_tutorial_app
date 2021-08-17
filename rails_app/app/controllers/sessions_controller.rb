@@ -14,6 +14,16 @@ class SessionsController < ApplicationController
       return
     end
 
+    # ユーザーが有効化されてなかったらエラーを返す
+    if !@user.activated?
+      message =
+        'Account not activated. Check your email for the activation link.'
+
+      flash[:warning] = message
+      redirect_to root_path
+      return
+    end
+
     # ログイン
     log_in @user
 
