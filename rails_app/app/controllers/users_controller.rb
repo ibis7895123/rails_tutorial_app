@@ -67,7 +67,6 @@ class UsersController < ApplicationController
       .require(:user)
       .permit(:name, :email, :password, :password_confirmation)
   end
-
   private :user_params
 
   # ログイン済ユーザーかチェック
@@ -90,7 +89,6 @@ class UsersController < ApplicationController
     # 自分以外のページを開こうとしていたらHOMEに戻す
     redirect_to root_path unless current_user?(@user)
   end
-
   private :logged_in_user
 
   # 管理者かどうか確認
