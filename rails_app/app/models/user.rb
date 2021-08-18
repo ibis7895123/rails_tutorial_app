@@ -41,14 +41,24 @@ class User < ApplicationRecord
     return false if digest.nil?
 
     # トークンとダイジェストを突き合わせて、同じならtrue
-    return(
-      BCrypt::Password.new(digest).is_password?(token)
-    )
+    return BCrypt::Password.new(digest).is_password?(token)
   end
 
   # DBに保存していたユーザーのログイントークンを破棄する
   def forget(user)
     user.update_attribute(:remember_digest, nil)
+  end
+
+  # アカウントを有効にする
+  def activate
+    # 有効化フラグをONにして日付を記録
+    self.update_attribute(:activated, true)
+    self.update_attribute(:activated_at, Time.zone.now)
+  end
+
+  # 有効化用のメールを送信する
+  def send_activation_email
+    UserMailer.account_activation(self).deliver_now
   end
 
   # メールアドレスをすべて小文字にする

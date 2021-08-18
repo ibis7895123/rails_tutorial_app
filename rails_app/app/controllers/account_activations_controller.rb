@@ -14,9 +14,8 @@ class AccountActivationsController < ApplicationController
       return
     end
 
-    # 有効化フラグをONにして日付を記録
-    user.update_attribute(:activated, true)
-    user.update_attribute(:activated_at, Time.zone.now)
+    # アカウントを有効化する
+    user.activate
 
     # ログイン
     log_in user

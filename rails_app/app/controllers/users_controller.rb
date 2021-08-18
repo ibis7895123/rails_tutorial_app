@@ -24,7 +24,7 @@ class UsersController < ApplicationController
     # 保存が成功したかどうかで遷移先を分岐
     if @user.save
       # アカウントの有効化メールを送信
-      UserMailer.account_activation(@user).deliver_now
+      @user.send_activation_email
 
       flash[:info] = 'Please check your email to activate your account.'
       redirect_to root_path
