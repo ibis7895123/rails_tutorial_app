@@ -5,13 +5,18 @@ class UsersController < ApplicationController
   before_action :admin_user, only: :destroy
 
   def index
-    @users = User.paginate(page: params[:page])
+    @users = User.where(activated: true).paginate(page: params[:page])
   end
 
   def show
     @user = User.find(params[:id])
-    # 以下を埋め込むとコンソールでその時点のデバッグができる
-    # debugger
+
+    # 有効なユーザーでない場合はHOMEに戻す
+    if !@user.activated?
+      p @user.activated?
+      redirect_to root_path
+      return
+    end
   end
 
   def new
