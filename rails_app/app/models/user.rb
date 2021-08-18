@@ -52,8 +52,7 @@ class User < ApplicationRecord
   # アカウントを有効にする
   def activate
     # 有効化フラグをONにして日付を記録
-    self.update_attribute(:activated, true)
-    self.update_attribute(:activated_at, Time.zone.now)
+    self.update_attributes(activated: true, activated_at: Time.zone.now)
   end
 
   # 有効化用のメールを送信する
