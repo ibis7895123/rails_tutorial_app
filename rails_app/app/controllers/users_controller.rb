@@ -13,7 +13,7 @@ class UsersController < ApplicationController
 
     # 有効なユーザーでない場合はHOMEに戻す
     if !@user.activated?
-      p @user.activated?
+      flash[:danger] = 'This user is not activated.'
       redirect_to root_path
       return
     end

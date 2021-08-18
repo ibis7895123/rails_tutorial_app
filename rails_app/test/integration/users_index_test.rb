@@ -4,6 +4,7 @@ class UsersIndexTest < ActionDispatch::IntegrationTest
   def setup
     @admin_user = users(:michael)
     @non_admin_user = users(:archer)
+    @non_activated_user = users(:lana)
   end
 
   test '正常系_ページネーション付きで一覧ページを取得_管理者ユーザー' do
@@ -19,6 +20,7 @@ class UsersIndexTest < ActionDispatch::IntegrationTest
     assert_select 'div.pagination', count: 2
 
     User
+      .where(activated: true)
       .paginate(page: 1)
       .each do |user|
         # 表示されているユーザーのリンクが正しい
@@ -29,6 +31,12 @@ class UsersIndexTest < ActionDispatch::IntegrationTest
           assert_select 'a[href=?]', user_path(user), text: 'delete'
         end
       end
+
+    # 有効化されていないユーザーは表示されない
+    assert_select 'a[href=?]',
+                  user_path(@non_activated_user),
+                  text: @non_activated_user.name,
+                  count: 0
 
     # non_admin_userを削除したあと、ユーザー数が減っている
     assert_difference 'User.count', -1 do
