@@ -2,7 +2,7 @@
 <h1>Log in</h1>
 <div>
   <div>
-    <%= form_with scope: :session, url: login_path, local: true do |f| %><!--  -->
+    <%= form_with(scope: :session, url: login_path, local: true) do |f| %><!--  -->
 
     <%= f.label :email %><!--  -->
     <%= f.email_field :email, class: 'form-control' %><!--  -->
