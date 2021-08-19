@@ -17,4 +17,6 @@ Rails
     delete '/logout', to: 'sessions#destroy'
 
     resources :account_activations, only: [:edit]
+
+    resources :password_resets, only: %i[new create edit update]
   end
