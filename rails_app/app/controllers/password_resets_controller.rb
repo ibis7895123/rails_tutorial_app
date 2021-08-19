@@ -49,6 +49,9 @@ class PasswordResetsController < ApplicationController
     # ログイン
     log_in @user
 
+    # リセットダイジェストとリセット日時をnilにする
+    @user.update_attributes(reset_digest: nil, reset_sent_at: nil)
+
     flash[:success] = 'Password has been reset.'
     redirect_to user_path(@user)
   end
@@ -73,6 +76,7 @@ class PasswordResetsController < ApplicationController
     # 場合**以外**はHOMEに戻す
     unless @user && @user.activated? &&
              @user.authenticated?(:reset, params[:id])
+      flash[:danger] = 'This user is invalid.'
       redirect_to root_path
     end
   end
