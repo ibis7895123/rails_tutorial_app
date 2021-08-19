@@ -30,6 +30,7 @@ class PasswordResetsController < ApplicationController
 
   def update
     # 入力パスワードが空の場合、エラー
+    # ユーザー編集ではpasswordが空でもOKなので、ここで個別にエラー検知する
     if params[:user][:password].empty?
       @user.errors.add(:password, :blank)
       render 'edit'
@@ -70,7 +71,8 @@ class PasswordResetsController < ApplicationController
     # 2．ユーザーが有効化済
     # 3．リセットトークンが正しい
     # 場合**以外**はHOMEに戻す
-    unless @user && @user.activated? && @user.authenticated?(:reset, params[:id])
+    unless @user && @user.activated? &&
+             @user.authenticated?(:reset, params[:id])
       redirect_to root_path
     end
   end
