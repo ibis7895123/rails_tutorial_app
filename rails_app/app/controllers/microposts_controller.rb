@@ -1,5 +1,6 @@
 class MicropostsController < ApplicationController
   before_action :logged_in_user, only: %i[create destroy]
+  before_action :correct_user, only: %i[destroy]
 
   def create
     # 投稿の作成
@@ -19,11 +20,24 @@ class MicropostsController < ApplicationController
     redirect_to root_path
   end
 
-  def destroy; end
+  def destroy
+    @micropost.destroy
+    flash[:success] = 'Micropost deleted!'
+
+    # 戻る先がある場合はそこに戻る(デフォルトはHOME)
+    redirect_back(fallback_location: root_path)
+  end
 
   # 許可されたパラメータのみ取得する
   def micropost_params
     params.require(:micropost).permit(:content)
   end
   private :micropost_params
+
+  def correct_user
+    @micropost = current_user.microposts.find_by(id: params[:id])
+
+    # 該当の投稿が見つからなければHOMEへ
+    redirect_to if @micropost.nil?
+  end
 end
