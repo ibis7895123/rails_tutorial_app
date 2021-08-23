@@ -17,6 +17,9 @@ class UsersController < ApplicationController
       redirect_to root_path
       return
     end
+
+    # 紐づく投稿を取得
+    @microposts = @user.microposts.paginate(page: params[:page])
   end
 
   def new
