@@ -1,28 +1,8 @@
 <% if logged_in? %>
 <!-- ログインしている場合はユーザー情報と投稿一覧を表示 -->
-<div class="row">
-  <aside class="col-md-4">
-    <section class="user_info"><%= render "shared/user_info" %></section>
-    <section class="micropost_form">
-      <%= render "shared/micropost_form" %>
-    </section>
-  </aside>
-</div>
+<%= render "static_pages/login_home" %><!--  -->
 
 <% else %>
 <!-- 未ログインなら新規登録への動線を表示 -->
-<div class="center jumbotron">
-  <h1>Sample App</h1>
-
-  <h2>
-    This is the home page for the
-    <a href="https://railstutorial.jp/">Ruby on Rails Tutorial</a>
-    sample application.
-  </h2>
-
-  <%= link_to "Sign up now!", signup_path, class: "btn btn-lg btn-primary" %>
-</div>
-
-<%= link_to image_tag("rails.png", alt: "Rails logo"), "http://rubyonrails.org/"
-%><!-- -->
+<%= render "static_pages/unlogin_home" %><!--  -->
 <% end %>
