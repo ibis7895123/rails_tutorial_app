@@ -10,6 +10,7 @@ class MicropostsController < ApplicationController
 
     # 保存に失敗したらHOMEに戻す
     if !is_post_success
+      @feed_items = []
       render 'static_pages/home'
       return
     end

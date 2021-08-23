@@ -27,6 +27,11 @@ class User < ApplicationRecord
   validates :password, presence: true, length: { minimum: 6 }, allow_nil: true
   has_secure_password
 
+  # ユーザーの持つ投稿の一覧を返す
+  def feed
+    return Micropost.where('user_id = ?', id)
+  end
+
   def remember
     @remember_token = User.new_token
 
