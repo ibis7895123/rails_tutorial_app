@@ -2,6 +2,8 @@
 VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
 
 class User < ApplicationRecord
+  has_many :microposts
+
   attr_accessor :remember_token, :activation_token, :reset_token
 
   # モデル保存前にメールアドレスを小文字に変換する
