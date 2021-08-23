@@ -92,4 +92,18 @@ class UserTest < ActiveSupport::TestCase
   test '正常系_remember_digestが空文字で認証状態を確認してもエラーにならない' do
     assert_not @user.authenticated?(:remember, '')
   end
+
+  # micropostsのテスト
+  test '正常系_ユーザーを削除したときに投稿内容も削除される' do
+    # 一度saveしないとcreateがエラーになるので保存
+    @user.save
+
+    # 投稿を作成
+    @user.microposts.create!(content: 'Lorem ipsum')
+
+    # ユーザーを削除したときに投稿数が1減っているか
+    assert_difference 'Micropost.count', -1 do
+      @user.destroy
+    end
+  end
 end
