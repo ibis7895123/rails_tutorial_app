@@ -75,19 +75,6 @@ class UsersController < ApplicationController
   end
   private :user_params
 
-  # ログイン済ユーザーかチェック
-  # 未ログインならログインページへリダイレクト
-  def logged_in_user
-    # ログイン済なら何もしない
-    return if logged_in?
-
-    # ログイン後のリダイレクト先を記憶しておく
-    store_location
-
-    flash[:danger] = 'Please log in.'
-    redirect_to login_path
-  end
-
   # 開こうとしているページが自分のものどうかを確認
   def correct_user
     @user = User.find(params[:id])
@@ -95,11 +82,12 @@ class UsersController < ApplicationController
     # 自分以外のページを開こうとしていたらHOMEに戻す
     redirect_to root_path unless current_user?(@user)
   end
-  private :logged_in_user
+  private :correct_user
 
   # 管理者かどうか確認
   def admin_user
     # 管理者でなければHOMEに戻す
     redirect_to root_path unless current_user.admin?
   end
+  private :admin_user
 end
