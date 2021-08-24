@@ -3,10 +3,15 @@ VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
 
 class User < ApplicationRecord
   has_many :microposts, dependent: :destroy
+
+  # フォロー関係の中間テーブル
   has_many :active_relationships,
            class_name: 'Relationship',
            foreign_key: 'follower_id',
            dependent: :destroy
+
+  # フォローされたユーザーをactive_relationships経由でリレーション
+  has_many :following, through: :active_relationships, source: :followed
 
   attr_accessor :remember_token, :activation_token, :reset_token
 
@@ -89,6 +94,21 @@ class User < ApplicationRecord
   # パスワード再設定期限は2時間
   def password_reset_expired?
     return reset_sent_at < 2.hours.ago
+  end
+
+  # ユーザーをフォローする
+  def follow(other_user)
+    self.following.push(other_user)
+  end
+
+  # ユーザーをフォロー解除する
+  def unfollow(other_user)
+    self.active_relationships.find_by(followed_id: other_user.id).destroy
+  end
+
+  # 現在のユーザーがフォローしていたらtrue
+  def following?(other_user)
+    return self.following.include?(other_user)
   end
 
   # メールアドレスをすべて小文字にする

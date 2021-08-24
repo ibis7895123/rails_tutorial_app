@@ -106,4 +106,25 @@ class UserTest < ActiveSupport::TestCase
       @user.destroy
     end
   end
+
+  # フォロー関連のテスト
+  test '正常系_ユーザーのフォロー、アンフォロー' do
+    michael = users(:michael)
+    archer = users(:archer)
+
+    # michaelはarcherをフォローしていない
+    assert_not michael.following?(archer)
+
+    # フォロー
+    michael.follow(archer)
+
+    # フォロー状態になる
+    assert michael.following?(archer)
+
+    # アンフォロー
+    michael.unfollow(archer)
+
+    # フォローしていない
+    assert_not michael.following?(archer)
+  end
 end
