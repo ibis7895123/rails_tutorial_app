@@ -37,7 +37,9 @@ class MicropostsController < ApplicationController
   def correct_user
     @micropost = current_user.microposts.find_by(id: params[:id])
 
+    flash[:danger] = "You can't delete someone else's micropost."
+
     # 該当の投稿が見つからなければHOMEへ
-    redirect_to if @micropost.nil?
+    redirect_to root_path if @micropost.nil?
   end
 end

@@ -24,4 +24,21 @@ class MicropostsControllerTest < ActionDispatch::IntegrationTest
     # ログインページにリダイレクト
     assert_redirected_to login_path
   end
+
+  test '異常系_自分以外の投稿は削除できない' do
+    # michaelでログイン
+    log_in_as_test(users(:michael))
+    micropost = microposts(:ants)
+
+    # antsの投稿の削除リクエスト前後で投稿数が変わっていない
+    assert_no_difference 'Micropost.count' do
+      delete micropost_path(micropost)
+    end
+
+    # HOMEにリダイレクト
+    assert_redirected_to root_path
+
+    # フラッシュメッセージにエラーが入っている
+    assert_not flash[:danger].empty?
+  end
 end
