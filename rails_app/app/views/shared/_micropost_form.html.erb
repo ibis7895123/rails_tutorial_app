@@ -4,8 +4,12 @@
 <%= render "shared/error_messages", object: form.object %>
 
 <div class="field">
+  <!-- 投稿テキスト -->
   <%= form.text_area :content, placeholder: "Compose new micropost..." %>
 </div>
 
 <%= form.submit "Post", class: "btn btn-primary" %><!--  -->
+
+<!-- 画像ファイル -->
+<span class="picture"><%= form.file_field :picture %></span>
 <% end %>

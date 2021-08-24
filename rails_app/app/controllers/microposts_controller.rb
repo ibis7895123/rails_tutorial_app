@@ -30,7 +30,7 @@ class MicropostsController < ApplicationController
 
   # 許可されたパラメータのみ取得する
   def micropost_params
-    params.require(:micropost).permit(:content)
+    params.require(:micropost).permit(:content, :picture)
   end
   private :micropost_params
 
