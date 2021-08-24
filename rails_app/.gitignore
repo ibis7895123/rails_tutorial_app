@@ -26,3 +26,6 @@ vendor
 
 # springファイルは自動生成のため無視する
 /spring/*.pid
+
+# アップロードされた画像ファイル
+/public/uploads
