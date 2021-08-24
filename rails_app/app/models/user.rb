@@ -10,7 +10,7 @@ class User < ApplicationRecord
            foreign_key: 'follower_id',
            dependent: :destroy
 
-  # フォローされたユーザーをactive_relationships経由でリレーション
+  # フォローしたユーザーをactive_relationships経由でリレーション
   has_many :following, through: :active_relationships, source: :followed
 
   attr_accessor :remember_token, :activation_token, :reset_token
