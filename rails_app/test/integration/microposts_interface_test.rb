@@ -15,11 +15,22 @@ class MicropostsInterfaceTest < ActionDispatch::IntegrationTest
     # ページネーションがある(投稿が表示されている)
     assert_select 'div.pagination'
 
+    # ファイルアップロードがある
+    assert_select 'input[type=file]'
+
+    # fixtureフォルダのファイルをアップロード
+    picture = fixture_file_upload('test/fixtures/files/rails.png', 'image/png')
     content = 'This micropost really ties the room together'
 
     # 投稿したあとに投稿数が1増えていることを確認
     assert_difference 'Micropost.count', 1 do
-      post microposts_path, params: { micropost: { content: content } }
+      post microposts_path,
+           params: {
+             micropost: {
+               content: content,
+               picture: picture
+             }
+           }
     end
 
     # HOMEにリダイレクト
