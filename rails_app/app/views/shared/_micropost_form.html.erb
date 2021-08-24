@@ -10,6 +10,20 @@
 
 <%= form.submit "Post", class: "btn btn-primary" %><!--  -->
 
-<!-- 画像ファイル -->
-<span class="picture"><%= form.file_field :picture %></span>
+<!-- 画像ファイル(jpeg, gif, png) -->
+<span class="picture">
+  <%= form.file_field :picture, id: "micropost_picture", accept:
+  "image/jpeg,image/gif,image/png" %>
+</span>
 <% end %>
+
+<script type="text/javascript">
+  $('#micropost_picture').bind('change', function () {
+    var size_in_mb = this.files[0].size / 1024 / 1024
+
+    // アップロードサイズが5MBを超えてたらアラート
+    if (size_in_mb > 5) {
+      alert('Maximum file size is 5MB. Please choose a smaller file.')
+    }
+  })
+</script>
