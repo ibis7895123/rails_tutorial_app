@@ -4,7 +4,7 @@ VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
 class User < ApplicationRecord
   has_many :microposts, dependent: :destroy
 
-  # フォロー関係の中間テーブル
+  # 自分→相手のフォロー関係の中間テーブル
   has_many :active_relationships,
            class_name: 'Relationship',
            foreign_key: 'follower_id',
@@ -12,6 +12,15 @@ class User < ApplicationRecord
 
   # フォローしたユーザーをactive_relationships経由でリレーション
   has_many :following, through: :active_relationships, source: :followed
+
+  #  相手→自分のフォロー関係の中間テーブル
+  has_many :passive_relationships,
+           class_name: 'Relationship',
+           foreign_key: 'followed_id',
+           dependent: :destroy
+
+  # フォローされたユーザーをpassive_relationships経由でリレーション
+  has_many :followers, through: :passive_relationships, source: :follower
 
   attr_accessor :remember_token, :activation_token, :reset_token
 

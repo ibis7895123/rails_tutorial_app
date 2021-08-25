@@ -121,6 +121,9 @@ class UserTest < ActiveSupport::TestCase
     # フォロー状態になる
     assert michael.following?(archer)
 
+    # archerから見たときはフォロワーにmichaelが追加されている
+    assert archer.followers.include?(michael)
+
     # アンフォロー
     michael.unfollow(archer)
 
