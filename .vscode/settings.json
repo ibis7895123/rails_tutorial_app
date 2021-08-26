@@ -16,5 +16,10 @@
 
   // デフォルトフォーマッタをprettierに
   "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "prettier.enableDebugLogs": true
+  "prettier.enableDebugLogs": true,
+
+  // js.erbはjsとして認識させる
+  "files.associations": {
+    "*.js.erb": "javascript"
+  }
 }
