@@ -75,4 +75,20 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     # HOMEにリダイレクト
     assert_redirected_to root_path
   end
+
+  test "異常系_ログインしていないとフォロー一覧ページは見れない" do
+    # フォロー一覧ページを開く
+    get following_user_path(@user)
+
+    # ログインしてない場合はログインページへリダイレクト
+    assert_redirected_to login_path
+  end
+
+  test "異常系_ログインしていないとフォロワー一覧ページは見れない" do
+    # フォロワー一覧ページを開く
+    get followers_user_path(@user)
+
+    # ログインしてない場合はログインページへリダイレクト
+    assert_redirected_to login_path
+  end
 end
