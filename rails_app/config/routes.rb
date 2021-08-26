@@ -31,4 +31,7 @@ Rails
 
     # 投稿
     resources :microposts, only: %i[create destroy]
+
+    # フォロー / フォロー解除
+    resources :relationships, only: %i[create destroy]
   end
