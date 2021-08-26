@@ -26,6 +26,10 @@ class UsersShowTest < ActionDispatch::IntegrationTest
     assert_select 'h1', text: @user.name
     assert_select 'h1>img.gravatar'
 
+    # フォローの統計情報が表示されているか
+    assert_select "strong#followers", text: @user.followers.count.to_s
+    assert_select "strong#following", text: @user.following.count.to_s
+
     # 投稿数がページに表示されているか
     # 文字列に変換しないとマッチしない
     assert_match @user.microposts.count.to_s, response.body

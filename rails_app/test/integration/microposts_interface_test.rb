@@ -12,6 +12,10 @@ class MicropostsInterfaceTest < ActionDispatch::IntegrationTest
     # HOMEを開く
     get root_path
 
+    # フォローの統計情報が表示されている
+    assert_select "strong#followers", text: @user.followers.count.to_s
+    assert_select "strong#following", text: @user.following.count.to_s
+
     # ページネーションがある(投稿が表示されている)
     assert_select 'div.pagination'
 
