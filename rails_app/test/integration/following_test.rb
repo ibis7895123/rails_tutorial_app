@@ -82,4 +82,15 @@ class FollowingTest < ActionDispatch::IntegrationTest
       delete relationship_path(relationship), xhr: true
     end
   end
+
+  test "正常系_HOMEのフィード" do
+    # HOMEを開く
+    get root_path
+
+    # フィードの投稿内容がすべて表示されている
+    # テキストはHTMLエンコードされているのでエスケープしてから比較する
+    @user.feed.paginate(page: 1).each do |micropost|
+      assert_match CGI.escapeHTML(micropost.content), response.body
+    end
+  end
 end
