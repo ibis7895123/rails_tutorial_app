@@ -47,7 +47,12 @@ class User < ApplicationRecord
 
   # ユーザーの持つ投稿の一覧を返す
   def feed
-    return Micropost.where('user_id = ?', id)
+    # 1．フォローしているユーザーのID(サブクエリ)
+    # 2．自分自身のID
+    # からmicropostを取得
+    subQuery = Relationship.select(:followed_id).where(follower_id: self.id)
+
+    return Micropost.where(user_id: subQuery).or(Micropost.where(user_id: self.id))
   end
 
   def remember

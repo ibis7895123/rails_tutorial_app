@@ -130,4 +130,27 @@ class UserTest < ActiveSupport::TestCase
     # フォローしていない
     assert_not michael.following?(archer)
   end
+
+  test '正常系_投稿のフィード' do
+    # michael と lanaは相互フォロー
+    # archer は michael をフォローしている前提
+    michael = users(:michael)
+    archer = users(:archer)
+    lana = users(:lana)
+
+    # フォローしているユーザーの投稿が見れる
+    lana.microposts.each do |post_followed|
+      assert michael.feed.include?(post_followed)
+    end
+
+    # 自分自身の投稿が見れる
+    michael.microposts.each do |post_self|
+      assert michael.feed.include?(post_self)
+    end
+
+    # フォローしていないユーザーの投稿は見れない
+    archer.microposts.each do |post_unfollowed|
+      assert_not michael.feed.include?(post_unfollowed)
+    end
+  end
 end
